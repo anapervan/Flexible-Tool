@@ -37,18 +37,19 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 m = GEKKO() # initialize gekko
 nt = 101
 m.time = np.linspace(0,2,nt)
-b = 0.75
+b = 0.75 # b is the final condition at the far end of the rod, not the upper bound of each value. should be 4x4
+
 # Variables (initial values for mu), need to figure out what's the initial values for mus
-mu1 = m.Var(value=0.1, lb = 0, ub = 1) 
-mu2 = m.Var(value=0.1, lb = 0, ub = 1) 
-mu3 = m.Var(value=0.1, lb = 0, ub = 1) 
+mu1 = m.Var(value=0.1, lb = 0, ub = 1)
+mu2 = m.Var(value=0.1, lb = 0, ub = 1)
+mu3 = m.Var(value=0.1, lb = 0, ub = 1)
 mu4 = m.Var(value = 0.1, lb = 0, ub = 1)
-mu5 = m.Var(value=0.1, lb = 0, ub = 1) 
+mu5 = m.Var(value=0.1, lb = 0, ub = 1)
 mu6 = m.Var(value = 0.1, lb = 0, ub = 1)
 
 u1 = m.Var(value=0)
-u2 = m.Var(value=0) 
-u3 = m.Var(value=0) 
+u2 = m.Var(value=0)
+u3 = m.Var(value=0)
 
 # q1 = m.Var(value=0, lb = 0, ub = b) # x
 # q2 = m.Var(value=0, lb = 0, ub = b) # y
@@ -73,32 +74,32 @@ q42 = m.Var(value=0, lb = 0, ub = b)
 q43 = m.Var(value=0, lb = 0, ub = b)
 q44 = m.Var(value=0, lb = 0, ub = b)
 
-x1 = [[0, 0, 0, 0], 
+x1 = [[0, 0, 0, 0],
     [0, 0, -1, 0],
     [0, 1, 0, 0],
      [0, 0, 0, 0]]
 
-x2 = [[0, 0, 1, 0], 
+x2 = [[0, 0, 1, 0],
     [0, 0, 0, 0],
     [-1, 0, 0, 0],
      [0, 0, 0, 0]]
 
-x3 = [[0, -1, 0, 0], 
+x3 = [[0, -1, 0, 0],
     [1, 0, 0, 0],
-    [0, 1, 0, 0],
-     [0, 0, 0, 0]]
-
-x4 = [[0, 0, 0, 1], 
     [0, 0, 0, 0],
-    [0, 1, 0, 0],
      [0, 0, 0, 0]]
 
-x5 = [[0, 0, 0, 0], 
+x4 = [[0, 0, 0, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+     [0, 0, 0, 0]]
+
+x5 = [[0, 0, 0, 0],
     [0, 0, 0, 1],
-    [0, 1, 0, 0],
+    [0, 0, 0, 0],
      [0, 0, 0, 0]]
 
-x6 = [[0, 0, 0, 0], 
+x6 = [[0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 1],
      [0, 0, 0, 0]]
@@ -110,6 +111,10 @@ x6 = [[0, 0, 0, 0],
 # variable array dimension
 n = 4 # rows
 p = 4 # columns
+
+e = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1] # beginning point of rod - no rotation or translation
+b = [1,0,0,0, 0,1,0,0, 0,0,1,0, 1,0,0,1] # final point (opposite end) configuration of rod
+
 # create array
 q = m.Array(m.Var,(n,p))
 for i in range(n):
@@ -243,8 +248,8 @@ m.solve(disp=False)
 # u3 = c3**(-1)*mu3
 # v = np.array([mu1, mu2, mu3, mu4, mu5, mu6, u1, u2, u3])
 # display(v.shape)
-# def rhs(s, v): 
-#     return [v[8]*v[1] - v[7]*v[2], 
+# def rhs(s, v):
+#     return [v[8]*v[1] - v[7]*v[2],
 #             v[5] + v[6]*v[2]- v[8]*v[0],
 #             -v[4] + v[7]*v[0] - v[6]*v[1],
 #              v[8]*v[4] - v[7]*v[5],
@@ -260,7 +265,3 @@ m.solve(disp=False)
 
 
 # In[ ]:
-
-
-
-
