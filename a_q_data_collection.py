@@ -3,14 +3,14 @@ from gekko import GEKKO
 import csv
 
 
-for i in range(1):
+for i in range(5):
     ### Generate representation a
     # a in A in R6 where (a2,a3,a5,a6) =/= (0,0,0,0)
     a = np.random.rand(6) # numpy array with random values
 
 
     ##################################################
-    ### Solve for mu's ###############################
+    ### Equations for mu's ###########################
     ##################################################
 
     m = GEKKO()            # create GEKKO model
@@ -40,13 +40,9 @@ for i in range(1):
     m.Equation(mu5.dt() == (c1**-1)*mu1*mu6 - (c3**-1)*mu3*mu4)
     m.Equation(mu6.dt() == (c2**-1)*mu2*mu4 - (c1**-1)*mu1*mu5)
 
-    # solve equations
-    m.options.IMODE=4
-    m.solve(disp=False)
-
 
     ##################################################
-    ### Solve for stability (Jacobian) ###############
+    ### Equations for stability (Jacobian) ###########
     ##################################################
 
     # define variables
@@ -200,27 +196,10 @@ for i in range(1):
     m.Equation(J65.dt() == -J25 + (mu2/c2)*J45 + (-mu1/c1)*J55)
     m.Equation(J66.dt() == -J26 + (mu2/c2)*J46 + (-mu1/c1)*J56)
 
-    # solve equations
-    m.options.IMODE=4
-    m.solve(disp=False)
-
-    # solve for determinant of Jacobian
-    J = np.array([[J11, J12, J13, J14, J15, J16],[J21, J22, J23, J24, J25, J26],[J31, J32, J33, J34, J35, J36],[J41, J42, J43, J44, J45, J46],[J51, J52, J53, J54, J55, J56],[J61, J62, J63, J64, J65, J66]])
-    stable = True
-    for i in range(1,t_steps): # for each time step
-        det_J = np.linalg.det(J[:,:,i])
-        print("det J = ", det_J)
-        if det_J == 0:
-            stable = False
-            print("Configuration is NOT stable")
-            break
-
-    if stable:
-      print("Configuration is stable")
 
 
     ##################################################
-    ### Solve for q's ################################
+    ### Equations for q's ############################
     ##################################################
 
     # define variables
@@ -260,13 +239,38 @@ for i in range(1):
     m.Equation(q34.dt() == q31)
     m.Equation(q44.dt() == q41)
 
-    # solve equations
+
+
+    ##################################################
+    ### Solve Equations ##############################
+    ##################################################
     m.options.IMODE=4
     m.solve(disp=False)
 
+    # solve for determinant of Jacobian
+    J = np.array([[J11, J12, J13, J14, J15, J16],[J21, J22, J23, J24, J25, J26],[J31, J32, J33, J34, J35, J36],[J41, J42, J43, J44, J45, J46],[J51, J52, J53, J54, J55, J56],[J61, J62, J63, J64, J65, J66]])
+    det_J_list = [1]*t_steps
+    stable = True
+    for i in range(t_steps): # for each time step
+        det_J = np.linalg.det(J[:,:,i])
+        det_J_list[i]=det_J
+        # print("det J = ", det_J)
+        # if det_J == 0:
+        #     stable = False
+        #     # print("Configuration is NOT stable")
+        #     # break
+
+    # if stable:
+      # print("Configuration is stable")
+
     q = [q11, q12, q13, q14, q21, q22, q23, q24, q31, q32, q33, q34, q41, q42, q43, q44]
+    # print("a=",a)
+    # print("q=",q)
 
-
+    # Print
+    print('a =', a[0], a[1], a[2], a[3], a[4], a[5])
+    print('b =', q14[-1], q24[-1], q34[-1])
+    print(" ")
     ##################################################
     ### output = a, q, stable ########################
     ##################################################
@@ -275,5 +279,5 @@ for i in range(1):
         writer = csv.writer(csvfile, delimiter=' ')
         writer.writerow(["a", str(a)])
         writer.writerow(["q", str(q)])
-        writer.writerow(["stable", str(stable)])
+        writer.writerow(["det_J", str(det_J_list)])
         writer.writerow([])
