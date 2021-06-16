@@ -3,7 +3,7 @@ from gekko import GEKKO
 import csv
 
 
-for i in range(5):
+for i in range(1):
     ### Generate representation a
     # a in A in R6 where (a2,a3,a5,a6) =/= (0,0,0,0)
     a = np.random.rand(6) # numpy array with random values
@@ -207,15 +207,16 @@ for i in range(5):
     # solve for determinant of Jacobian
     J = np.array([[J11, J12, J13, J14, J15, J16],[J21, J22, J23, J24, J25, J26],[J31, J32, J33, J34, J35, J36],[J41, J42, J43, J44, J45, J46],[J51, J52, J53, J54, J55, J56],[J61, J62, J63, J64, J65, J66]])
     stable = True
-    for i in range(t_steps): # for each time step
-      det_J = np.linalg.det(J[:,:,i])
-      if det_J == 0:
-        stable = False
-        # print("Configuration is NOT stable")
-        break
+    for i in range(1,t_steps): # for each time step
+        det_J = np.linalg.det(J[:,:,i])
+        print("det J = ", det_J)
+        if det_J == 0:
+            stable = False
+            print("Configuration is NOT stable")
+            break
 
-    # if stable:
-      # print("Configuration is stable")
+    if stable:
+      print("Configuration is stable")
 
 
     ##################################################
@@ -270,7 +271,7 @@ for i in range(5):
     ### output = a, q, stable ########################
     ##################################################
 
-    with open('a_q_data_1.csv', 'a', newline='') as csvfile:                         # save data
+    with open('data_1a.csv', 'a', newline='') as csvfile:                         # save data
         writer = csv.writer(csvfile, delimiter=' ')
         writer.writerow(["a", str(a)])
         writer.writerow(["q", str(q)])
