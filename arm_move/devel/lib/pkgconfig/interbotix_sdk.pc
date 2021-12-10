@@ -1,0 +1,8 @@
+prefix=/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/devel
+
+Name: interbotix_sdk
+Description: Description of interbotix_sdk
+Version: 0.0.0
+Cflags: -I/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/devel/include -I/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/src/interbotix_ros_arms/interbotix_sdk/include
+Libs: -L${prefix}/lib 
+Requires: actionlib dynamixel_workbench_toolbox interbotix_descriptions message_runtime roscpp sensor_msgs std_msgs std_srvs trajectory_msgs urdf yaml-cpp

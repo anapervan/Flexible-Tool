@@ -1,0 +1,8 @@
+prefix=/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/install
+
+Name: interbotix_puppet_control
+Description: Description of interbotix_puppet_control
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: interbotix_sdk rosbag roscpp tf2_ros rviz sensor_msgs std_msgs std_srvs

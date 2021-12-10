@@ -1,0 +1,8 @@
+prefix=/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/install
+
+Name: interbotix_descriptions
+Description: Description of interbotix_descriptions
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: joint_state_publisher robot_state_publisher roslaunch rviz tf2_ros xacro

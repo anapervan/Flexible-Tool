@@ -1,0 +1,8 @@
+prefix=/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/devel
+
+Name: interbotix_joy_control
+Description: Description of interbotix_joy_control
+Version: 0.0.0
+Cflags: -I/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/devel/include
+Libs: -L${prefix}/lib 
+Requires: interbotix_sdk joy message_runtime roscpp rospy sensor_msgs std_msgs tf2_ros

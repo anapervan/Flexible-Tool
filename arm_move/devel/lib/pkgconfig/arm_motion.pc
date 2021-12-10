@@ -1,0 +1,8 @@
+prefix=/home/bowen/Documents/Rod_manipulation/Flexible-Tool/arm_move/devel
+
+Name: arm_motion
+Description: Description of arm_motion
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs moveit_msgs
